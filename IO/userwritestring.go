@@ -4,7 +4,7 @@ import (
 	"fmt"
 )
 
-func UserWrite(text string) string {
+func UserWriteString(text string) string {
 
 	fmt.Println(text)
 
