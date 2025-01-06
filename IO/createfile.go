@@ -6,20 +6,22 @@ import (
 )
 
 func CreateFile(name string, text string) {
-	fmt.Println("Creating file")
 	file, err := os.Create(name)
-
 	if err != nil {
-		panic(err)
+		fmt.Printf("Error creating file %s: %v\n", name, err)
+		return
+	}
+	defer func() {
+		if cerr := file.Close(); cerr != nil {
+			fmt.Printf("Error closing file %s: %v\n", name, cerr)
+		}
+	}()
+
+	_, err = file.WriteString(text)
+	if err != nil {
+		fmt.Printf("Error writing to file %s: %v\n", name, err)
+		return
 	}
 
-	length, err := file.WriteString(text)
-
-	if err != nil {
-		panic(err)
-	}
-
-	fmt.Printf("File name: %s", file.Name())
-	fmt.Printf("\nfile length: %d\n", length)
-
+	fmt.Printf("File created successfully: %s\n", file.Name())
 }
