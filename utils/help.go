@@ -18,6 +18,7 @@ func DisplayHelp(page int) {
 		"/update - Update a file",
 		"/rename - Rename a file",
 		"/aichat - AI Chat",
+		"/google - Google search",
 	}
 
 	// Calculate the start and end indices based on the page
