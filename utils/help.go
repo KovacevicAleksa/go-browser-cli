@@ -17,8 +17,7 @@ func DisplayHelp(page int) {
 		"/exit - Exit the program",
 		"/update - Update a file",
 		"/rename - Rename a file",
-		"/backup - Backup a file",
-		"/restore - Restore a file",
+		"/aichat - AI Chat",
 	}
 
 	// Calculate the start and end indices based on the page

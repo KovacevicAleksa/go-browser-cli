@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	AI "go-browser/AI"
 	IO "go-browser/IO"
 	Boot "go-browser/boot"
 	utils "go-browser/utils"
@@ -39,11 +40,19 @@ func main() {
 			name := utils.UserWriteString("Enter file name for update:")
 			text := utils.UserWriteString("Enter file content:")
 			IO.UpdateFile(name, text)
+		case "/rename":
+			name := utils.UserWriteString("Enter file name for rename:")
+			newname := utils.UserWriteString("Enter new file name for update:")
+			IO.RenameFile(name, newname)
 		case "/about":
 			about := "Ver v0.0.0"
 			fmt.Println(about)
 		case "/list":
 			IO.ListFile(".")
+		case "/aichat":
+			text := utils.UserWriteString("Enter text")
+			response := AI.ChatGPT(text)
+			fmt.Println(response)
 		default:
 			fmt.Println("Invalid command. Type /help for available commands.")
 		}
