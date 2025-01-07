@@ -12,6 +12,7 @@ func DisplayHelp(page int) {
 		"/read - Read a file",
 		"/delete - Delete a file",
 		"/help - Show available commands",
+		"/about - Show version",
 		"/list - List all files",
 		"/exit - Exit the program",
 		"/update - Update a file",

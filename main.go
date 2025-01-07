@@ -3,10 +3,14 @@ package main
 import (
 	"fmt"
 	IO "go-browser/IO"
+	Boot "go-browser/boot"
 	utils "go-browser/utils"
 )
 
 func main() {
+
+	Boot.BootLoader()
+
 	for {
 		utils.PrintDashedLine()
 
@@ -35,6 +39,11 @@ func main() {
 			name := utils.UserWriteString("Enter file name for update:")
 			text := utils.UserWriteString("Enter file content:")
 			IO.UpdateFile(name, text)
+		case "/about":
+			about := "Ver v0.0.0"
+			fmt.Println(about)
+		case "/list":
+			IO.ListFile(".")
 		default:
 			fmt.Println("Invalid command. Type /help for available commands.")
 		}

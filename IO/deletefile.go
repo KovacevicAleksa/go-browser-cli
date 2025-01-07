@@ -2,16 +2,23 @@ package IO
 
 import (
 	"fmt"
-	"log"
 	"os"
+	"path/filepath"
 )
 
 func DeleteFile(name string) {
+	// Define the folder name
+	folderName := "user_files"
 
-	e := os.Remove(name)
-	if e != nil {
-		log.Fatal(e)
+	// Build the full file path
+	filePath := filepath.Join(folderName, name)
+
+	// Attempt to delete the file
+	err := os.Remove(filePath)
+	if err != nil {
+		fmt.Printf("Error deleting file %s: %v\n", filePath, err)
+		return
 	}
 
-	fmt.Printf("Succes removed file name: %s\n", name)
+	fmt.Printf("Successfully removed file: %s\n", filePath)
 }
