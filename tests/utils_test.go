@@ -84,3 +84,33 @@ func TestUserWriteString(t *testing.T) {
 		t.Errorf("Expected: %s, Got: %s", expected, actual)
 	}
 }
+
+// TestUserWriteBool tests UserWriteBool function by simulating user input.
+func TestUserWriteBool(t *testing.T) {
+	tests := []struct {
+		input    string
+		expected bool
+	}{
+		{"true\n", true},
+		{"false\n", false},
+		{"True\n", true},
+		{"FALSE\n", false},
+	}
+
+	oldStdin := os.Stdin
+	defer func() { os.Stdin = oldStdin }() // Ensure to restore stdin after the test
+
+	for _, tt := range tests {
+		r, w, _ := os.Pipe()
+		os.Stdin = r
+		go func(input string) {
+			w.Write([]byte(input))
+			w.Close()
+		}(tt.input)
+
+		actual := utils.UserWriteBool("Enter true or false:")
+		if actual != tt.expected {
+			t.Errorf("Input: %s, Expected: %t, Got: %t", tt.input, tt.expected, actual)
+		}
+	}
+}

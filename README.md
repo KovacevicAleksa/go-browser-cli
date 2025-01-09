@@ -1,6 +1,6 @@
 # go-browser
 
-go-browser is a command-line tool written in Go for managing files and providing various utility commands. It includes features like file management, basic AI chat, and web search functionality.
+`go-browser` is a command-line tool written in Go for managing files and providing various utility commands. It includes features like file management, basic AI chat, and web search functionality.
 
 ## Features
 
@@ -11,6 +11,8 @@ go-browser is a command-line tool written in Go for managing files and providing
 - **Utility Commands**:
   - AI chat for quick assistance.
   - Google search integration.
+  - Test website performance (loading time and status codes).
+  - Fetch and clean HTML content from a website.
   - Display help with a paginated view of available commands.
 
 - **Interactive Command Line**:
@@ -20,4 +22,4 @@ go-browser is a command-line tool written in Go for managing files and providing
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/go-browser.git
+   git clone github.com/KovacevicAleksa/go-browser.git
