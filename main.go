@@ -6,7 +6,10 @@ import (
 	IO "go-browser/IO"
 	Boot "go-browser/boot"
 	searchbrowser "go-browser/search-browser"
+	"go-browser/site"
+	Site "go-browser/site"
 	utils "go-browser/utils"
+	"time"
 )
 
 func main() {
@@ -74,7 +77,28 @@ func main() {
 				return
 			}
 			fmt.Println(result)
+		case "/siteperformance":
+			url := utils.UserWriteString("Enter site url for test performance:")
+			timeout := 10 * time.Second
+			err := Site.MeasureSitePerformance(url, timeout)
+			if err != nil {
+				fmt.Println("Error:", err)
+				return
+			}
+		case "/sitecontent":
+			url := utils.UserWriteString("Enter site url")
+			element := utils.UserWriteString("Specify the target element, or leave empty for all elements")
+			includeAttributes := utils.UserWriteBool("(true/false) Include attributes in the output")
+			filter := utils.UserWriteBool("(true/false) Filter out unnecessary elements like script, meta, etc.")
 
+			content, err := site.SiteContent(url, element, includeAttributes, filter)
+			if err != nil {
+				fmt.Println("Error:", err)
+				return
+			}
+
+			fmt.Println("Extracted Content:")
+			fmt.Println(content)
 		default:
 			fmt.Println("Invalid command. Type /help for available commands.")
 		}

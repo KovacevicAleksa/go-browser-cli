@@ -19,6 +19,8 @@ func DisplayHelp(page int) {
 		"/rename - Rename a file",
 		"/aichat - AI Chat",
 		"/google - Google search",
+		"/siteperformance - Test loading time and status code",
+		"/sitecontent fetches and cleans HTML content from site",
 	}
 
 	// Calculate the start and end indices based on the page
