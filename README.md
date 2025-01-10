@@ -1,6 +1,6 @@
-# go-browser
+# go-browser-cli
 
-`go-browser` is a command-line tool written in Go for managing files and providing various utility commands. It includes features like file management, basic AI chat, and web search functionality.
+`go-browser-cli` is a command-line tool written in Go for managing files and providing various utility commands. It includes features like file management, basic AI chat, and web search functionality.
 
 ## Features
 
@@ -22,4 +22,4 @@
 
 1. Clone the repository:
    ```bash
-   git clone github.com/KovacevicAleksa/go-browser.git
+   git clone github.com/KovacevicAleksa/go-browser-cli.git

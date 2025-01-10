@@ -88,7 +88,7 @@ func main() {
 		case "/sitecontent":
 			url := utils.UserWriteString("Enter site url")
 			element := utils.UserWriteString("Specify the target element, or leave empty for all elements")
-			includeAttributes := utils.UserWriteBool("(true/false) Include attributes in the output")
+			includeAttributes := utils.UserWriteBool("(true/false) Include attributes in HTML elements")
 			filter := utils.UserWriteBool("(true/false) Filter out unnecessary elements like script, meta, etc.")
 
 			content, err := site.SiteContent(url, element, includeAttributes, filter)
@@ -99,6 +99,14 @@ func main() {
 
 			fmt.Println("Extracted Content:")
 			fmt.Println(content)
+
+			var Save bool = false
+			Save = utils.UserWriteBool("(true/false) Save content?")
+			if Save {
+				name := utils.UserWriteString("File name?")
+				IO.CreateFile(name, content)
+			}
+
 		default:
 			fmt.Println("Invalid command. Type /help for available commands.")
 		}
