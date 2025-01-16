@@ -40,7 +40,7 @@ func DisplayHelp(page int) {
 
 	// Check if there are more commands to display
 	if end < len(commands) {
-		fmt.Println("\nType 'next' to see more commands.")
+		fmt.Println("\nFor next page type '/help' and page ", page+1)
 	} else {
 		fmt.Println("\nEnd of list.")
 	}

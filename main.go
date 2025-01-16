@@ -2,6 +2,10 @@ package main
 
 import (
 	"fmt"
+	"log"
+	"strings"
+	"time"
+
 	AI "go-browser/AI"
 	IO "go-browser/IO"
 	Boot "go-browser/boot"
@@ -9,27 +13,57 @@ import (
 	"go-browser/site"
 	Site "go-browser/site"
 	utils "go-browser/utils"
-	"time"
+
+	"github.com/chzyer/readline"
 )
 
 func main() {
 	// Initialize the bootloader
 	Boot.BootLoader()
 
+	// List of available commands
+	commands := []string{
+		"/help", "/exit", "/create", "/read", "/delete", "/update",
+		"/rename", "/about", "/list", "/aichat", "/google",
+		"/siteperformance", "/sitecontent",
+	}
+
+	// Initialize readline
+	rl, err := readline.NewEx(&readline.Config{
+		Prompt:          "Enter command: ",
+		AutoComplete:    utils.Completer(commands),
+		InterruptPrompt: "^C",
+		EOFPrompt:       "exit",
+	})
+	if err != nil {
+		log.Fatalf("Failed to initialize readline: %v", err)
+	}
+	defer rl.Close()
+
 	for {
+		// Print a dashed line for separation
 		utils.PrintDashedLine()
 
-		// Prompt the user for a command
-		command := utils.UserWriteString("Enter command (/help for assistance, /exit to quit):")
+		fmt.Println("Enter command /help for help, use tab for suggestion")
 
-		// Exit condition
-		if command == "/exit" {
-			fmt.Println("Exiting program.")
+		// Read user input
+		command, err := rl.Readline()
+		if err != nil {
+			fmt.Println("Error reading input. Exiting program.")
 			break
 		}
+		command = strings.TrimSpace(command)
 
 		// Handle different commands
 		switch command {
+		case "/help":
+			page := utils.UserWriteNum("Enter page number for help (e.g., 1, 2, 3):")
+			utils.DisplayHelp(page)
+
+		case "/exit":
+			fmt.Println("Exiting program.")
+			return
+
 		case "/create":
 			name := utils.UserWriteString("Enter file name:")
 			text := utils.UserWriteString("Enter file content:")
@@ -43,23 +77,18 @@ func main() {
 			name := utils.UserWriteString("Enter file name for deletion:")
 			IO.DeleteFile(name)
 
-		case "/help":
-			page := utils.UserWriteNum("Enter page number for help:")
-			utils.DisplayHelp(page)
-
 		case "/update":
 			name := utils.UserWriteString("Enter file name for update:")
-			text := utils.UserWriteString("Enter file content:")
+			text := utils.UserWriteString("Enter new content:")
 			IO.UpdateFile(name, text)
 
 		case "/rename":
-			name := utils.UserWriteString("Enter file name for rename:")
-			newname := utils.UserWriteString("Enter new file name for update:")
-			IO.RenameFile(name, newname)
+			name := utils.UserWriteString("Enter file name to rename:")
+			newName := utils.UserWriteString("Enter new file name:")
+			IO.RenameFile(name, newName)
 
 		case "/about":
-			about := "Version 0.0.0"
-			fmt.Println(about)
+			fmt.Println("Version 0.0.0 - Go Browser Tool")
 
 		case "/list":
 			IO.ListFile(".")
@@ -74,41 +103,40 @@ func main() {
 			result, err := searchbrowser.SearchGoogle(search)
 			if err != nil {
 				fmt.Println("Error:", err)
-				return
+			} else {
+				fmt.Println(result)
 			}
-			fmt.Println(result)
+
 		case "/siteperformance":
-			url := utils.UserWriteString("Enter site url for test performance:")
+			url := utils.UserWriteString("Enter site URL to test performance:")
 			timeout := 10 * time.Second
 			err := Site.MeasureSitePerformance(url, timeout)
 			if err != nil {
 				fmt.Println("Error:", err)
-				return
 			}
+
 		case "/sitecontent":
-			url := utils.UserWriteString("Enter site url")
-			element := utils.UserWriteString("Specify the target element, or leave empty for all elements")
-			includeAttributes := utils.UserWriteBool("(true/false) Include attributes in HTML elements")
-			filter := utils.UserWriteBool("(true/false) Filter out unnecessary elements like script, meta, etc.")
+			url := utils.UserWriteString("Enter site URL:")
+			element := utils.UserWriteString("Specify the target element (or leave empty for all):")
+			includeAttributes := utils.UserWriteBool("(true/false) Include attributes in HTML elements?")
+			filter := utils.UserWriteBool("(true/false) Filter unnecessary elements like scripts?")
 
 			content, err := site.SiteContent(url, element, includeAttributes, filter)
 			if err != nil {
 				fmt.Println("Error:", err)
-				return
-			}
+			} else {
+				fmt.Println("Extracted Content:")
+				fmt.Println(content)
 
-			fmt.Println("Extracted Content:")
-			fmt.Println(content)
-
-			var Save bool = false
-			Save = utils.UserWriteBool("(true/false) Save content?")
-			if Save {
-				name := utils.UserWriteString("File name?")
-				IO.CreateFile(name, content)
+				save := utils.UserWriteBool("(true/false) Save content?")
+				if save {
+					name := utils.UserWriteString("Enter file name to save content:")
+					IO.CreateFile(name, content)
+				}
 			}
 
 		default:
-			fmt.Println("Invalid command. Type /help for available commands.")
+			fmt.Println("Invalid command. Type /help for a list of available commands.")
 		}
 	}
 }
