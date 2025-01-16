@@ -2,6 +2,7 @@ package utils
 
 import (
 	"fmt"
+	"go-browser/types"
 	"strconv"
 )
 
@@ -43,5 +44,14 @@ func DisplayHelp(page int) {
 		fmt.Println("\nFor next page type '/help' and page ", page+1)
 	} else {
 		fmt.Println("\nEnd of list.")
+	}
+}
+
+// PrintHelp displays the list of available commands and their descriptions.
+func PrintHelp(commands []types.CommandHandler) {
+	fmt.Println("Available commands:")
+	for _, cmd := range commands {
+		// Print the command and its description
+		fmt.Printf("%s - %s\n", cmd.Command, cmd.Description)
 	}
 }

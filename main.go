@@ -3,47 +3,42 @@ package main
 import (
 	"fmt"
 	boot "go-browser/boot"
-	commands "go-browser/commands"
-	utils "go-browser/utils"
+	"go-browser/commands"
+	"go-browser/types"
+	"go-browser/utils"
 	"log"
 	"strings"
 
 	"github.com/chzyer/readline"
 )
 
-type CommandHandler struct {
-	command     string
-	handler     func()
-	description string
-}
-
 func main() {
 	// Initialize the bootloader
 	boot.BootLoader()
 
 	// Define the commands and their handlers
-	commandHandlers := []CommandHandler{
-		{"/help", commands.HandleHelp, "Displays the list of available commands"},
-		{"/exit", commands.HandleExit, "Exits the application"},
-		{"/create", commands.HandleCreate, "Creates a new item"},
-		{"/read", commands.HandleRead, "Reads an item"},
-		{"/delete", commands.HandleDelete, "Deletes an item"},
-		{"/update", commands.HandleUpdate, "Updates an item"},
-		{"/rename", commands.HandleRename, "Renames an item"},
-		{"/about", commands.HandleAbout, "Displays information about the application"},
-		{"/list", commands.HandleList, "Lists all items"},
-		{"/aichat", commands.HandleAIChat, "Starts an AI chat session"},
-		{"/google", commands.HandleGoogle, "Searches Google"},
-		{"/siteperformance", commands.HandleSitePerformance, "Analyzes site performance"},
-		{"/sitecontent", commands.HandleSiteContent, "Analyzes site content"},
+	commandHandlers := []types.CommandHandler{
+		{Command: "/help", Handler: commands.HandleHelp, Description: "Displays the list of available commands"},
+		{Command: "/exit", Handler: commands.HandleExit, Description: "Exits the application"},
+		{Command: "/create", Handler: commands.HandleCreate, Description: "Creates a new item"},
+		{Command: "/read", Handler: commands.HandleRead, Description: "Reads an item"},
+		{Command: "/delete", Handler: commands.HandleDelete, Description: "Deletes an item"},
+		{Command: "/update", Handler: commands.HandleUpdate, Description: "Updates an item"},
+		{Command: "/rename", Handler: commands.HandleRename, Description: "Renames an item"},
+		{Command: "/about", Handler: commands.HandleAbout, Description: "Displays information about the application"},
+		{Command: "/list", Handler: commands.HandleList, Description: "Lists all items"},
+		{Command: "/aichat", Handler: commands.HandleAIChat, Description: "Starts an AI chat session"},
+		{Command: "/google", Handler: commands.HandleGoogle, Description: "Searches Google"},
+		{Command: "/siteperformance", Handler: commands.HandleSitePerformance, Description: "Analyzes site performance"},
+		{Command: "/sitecontent", Handler: commands.HandleSiteContent, Description: "Analyzes site content"},
 	}
 
 	// Generate the command list for autocompletion
 	commandsList := make([]string, len(commandHandlers))
 	commandMap := make(map[string]func())
 	for i, cmd := range commandHandlers {
-		commandsList[i] = cmd.command
-		commandMap[cmd.command] = cmd.handler
+		commandsList[i] = cmd.Command
+		commandMap[cmd.Command] = cmd.Handler
 	}
 
 	// Initialize readline
@@ -75,17 +70,9 @@ func main() {
 		if handler, exists := commandMap[command]; exists {
 			handler()
 		} else if command == "/help" {
-			printHelp(commandHandlers)
+			utils.PrintHelp(commandHandlers)
 		} else {
 			fmt.Println("Invalid command. Type /help for a list of available commands.")
 		}
-	}
-}
-
-// printHelp displays the list of available commands and their descriptions
-func printHelp(commands []CommandHandler) {
-	fmt.Println("Available commands:")
-	for _, cmd := range commands {
-		fmt.Printf("%s - %s\n", cmd.command, cmd.description)
 	}
 }
