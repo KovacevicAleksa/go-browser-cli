@@ -16,7 +16,7 @@ func TestDisplayHelp(t *testing.T) {
 		"/delete - Delete a file\n" +
 		"/help - Show available commands\n" +
 		"/about - Show version\n\n" +
-		"Type 'next' to see more commands.\n"
+		"For next page type '/help' and page 2\n"
 
 	// Capture stdout
 	oldStdout := os.Stdout
