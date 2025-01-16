@@ -2,36 +2,54 @@ package main
 
 import (
 	"fmt"
+	boot "go-browser/boot"
+	commands "go-browser/commands"
+	utils "go-browser/utils"
 	"log"
 	"strings"
-	"time"
-
-	AI "go-browser/AI"
-	IO "go-browser/IO"
-	Boot "go-browser/boot"
-	searchbrowser "go-browser/search-browser"
-	"go-browser/site"
-	Site "go-browser/site"
-	utils "go-browser/utils"
 
 	"github.com/chzyer/readline"
 )
 
+type CommandHandler struct {
+	command     string
+	handler     func()
+	description string
+}
+
 func main() {
 	// Initialize the bootloader
-	Boot.BootLoader()
+	boot.BootLoader()
 
-	// List of available commands
-	commands := []string{
-		"/help", "/exit", "/create", "/read", "/delete", "/update",
-		"/rename", "/about", "/list", "/aichat", "/google",
-		"/siteperformance", "/sitecontent",
+	// Define the commands and their handlers
+	commandHandlers := []CommandHandler{
+		{"/help", commands.HandleHelp, "Displays the list of available commands"},
+		{"/exit", commands.HandleExit, "Exits the application"},
+		{"/create", commands.HandleCreate, "Creates a new item"},
+		{"/read", commands.HandleRead, "Reads an item"},
+		{"/delete", commands.HandleDelete, "Deletes an item"},
+		{"/update", commands.HandleUpdate, "Updates an item"},
+		{"/rename", commands.HandleRename, "Renames an item"},
+		{"/about", commands.HandleAbout, "Displays information about the application"},
+		{"/list", commands.HandleList, "Lists all items"},
+		{"/aichat", commands.HandleAIChat, "Starts an AI chat session"},
+		{"/google", commands.HandleGoogle, "Searches Google"},
+		{"/siteperformance", commands.HandleSitePerformance, "Analyzes site performance"},
+		{"/sitecontent", commands.HandleSiteContent, "Analyzes site content"},
+	}
+
+	// Generate the command list for autocompletion
+	commandsList := make([]string, len(commandHandlers))
+	commandMap := make(map[string]func())
+	for i, cmd := range commandHandlers {
+		commandsList[i] = cmd.command
+		commandMap[cmd.command] = cmd.handler
 	}
 
 	// Initialize readline
 	rl, err := readline.NewEx(&readline.Config{
 		Prompt:          "Enter command: ",
-		AutoComplete:    utils.Completer(commands),
+		AutoComplete:    utils.Completer(commandsList),
 		InterruptPrompt: "^C",
 		EOFPrompt:       "exit",
 	})
@@ -40,103 +58,34 @@ func main() {
 	}
 	defer rl.Close()
 
+	// Main loop
 	for {
-		// Print a dashed line for separation
 		utils.PrintDashedLine()
-
 		fmt.Println("Enter command /help for help, use tab for suggestion")
 
 		// Read user input
-		command, err := rl.Readline()
+		input, err := rl.Readline()
 		if err != nil {
 			fmt.Println("Error reading input. Exiting program.")
 			break
 		}
-		command = strings.TrimSpace(command)
+		command := strings.TrimSpace(input)
 
-		// Handle different commands
-		switch command {
-		case "/help":
-			page := utils.UserWriteNum("Enter page number for help (e.g., 1, 2, 3):")
-			utils.DisplayHelp(page)
-
-		case "/exit":
-			fmt.Println("Exiting program.")
-			return
-
-		case "/create":
-			name := utils.UserWriteString("Enter file name:")
-			text := utils.UserWriteString("Enter file content:")
-			IO.CreateFile(name, text)
-
-		case "/read":
-			name := utils.UserWriteString("Enter file name for reading:")
-			IO.ReadFile(name)
-
-		case "/delete":
-			name := utils.UserWriteString("Enter file name for deletion:")
-			IO.DeleteFile(name)
-
-		case "/update":
-			name := utils.UserWriteString("Enter file name for update:")
-			text := utils.UserWriteString("Enter new content:")
-			IO.UpdateFile(name, text)
-
-		case "/rename":
-			name := utils.UserWriteString("Enter file name to rename:")
-			newName := utils.UserWriteString("Enter new file name:")
-			IO.RenameFile(name, newName)
-
-		case "/about":
-			fmt.Println("Version 0.0.0 - Go Browser Tool")
-
-		case "/list":
-			IO.ListFile(".")
-
-		case "/aichat":
-			text := utils.UserWriteString("Enter text:")
-			response := AI.ChatGPT(text)
-			fmt.Println(response)
-
-		case "/google":
-			search := utils.UserWriteString("Enter text for search:")
-			result, err := searchbrowser.SearchGoogle(search)
-			if err != nil {
-				fmt.Println("Error:", err)
-			} else {
-				fmt.Println(result)
-			}
-
-		case "/siteperformance":
-			url := utils.UserWriteString("Enter site URL to test performance:")
-			timeout := 10 * time.Second
-			err := Site.MeasureSitePerformance(url, timeout)
-			if err != nil {
-				fmt.Println("Error:", err)
-			}
-
-		case "/sitecontent":
-			url := utils.UserWriteString("Enter site URL:")
-			element := utils.UserWriteString("Specify the target element (or leave empty for all):")
-			includeAttributes := utils.UserWriteBool("(true/false) Include attributes in HTML elements?")
-			filter := utils.UserWriteBool("(true/false) Filter unnecessary elements like scripts?")
-
-			content, err := site.SiteContent(url, element, includeAttributes, filter)
-			if err != nil {
-				fmt.Println("Error:", err)
-			} else {
-				fmt.Println("Extracted Content:")
-				fmt.Println(content)
-
-				save := utils.UserWriteBool("(true/false) Save content?")
-				if save {
-					name := utils.UserWriteString("Enter file name to save content:")
-					IO.CreateFile(name, content)
-				}
-			}
-
-		default:
+		// Handle commands
+		if handler, exists := commandMap[command]; exists {
+			handler()
+		} else if command == "/help" {
+			printHelp(commandHandlers)
+		} else {
 			fmt.Println("Invalid command. Type /help for a list of available commands.")
 		}
+	}
+}
+
+// printHelp displays the list of available commands and their descriptions
+func printHelp(commands []CommandHandler) {
+	fmt.Println("Available commands:")
+	for _, cmd := range commands {
+		fmt.Printf("%s - %s\n", cmd.command, cmd.description)
 	}
 }

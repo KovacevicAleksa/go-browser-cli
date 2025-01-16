@@ -6,7 +6,9 @@ import (
 
 func UserWriteString(text string) string {
 
-	fmt.Println(text)
+	if text != "" {
+		fmt.Println(text)
+	}
 
 	var first string
 
