@@ -11,7 +11,7 @@ import (
 func PrintDashedLine() {
 	width, _, err := term.GetSize(int(os.Stdout.Fd()))
 	if err != nil {
-		fmt.Println("Greška pri dobijanju širine terminala:", err)
+		fmt.Println("Error getting terminal width:", err)
 
 	}
 

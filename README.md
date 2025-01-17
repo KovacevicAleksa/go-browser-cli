@@ -14,6 +14,7 @@
   - Test website performance (loading time and status codes).
   - Fetch and clean HTML content from a website.
   - Display help with a paginated view of available commands.
+  - Function to create an auto-completer for commands (Tab).
 
 - **Interactive Command Line**:
   - User-friendly CLI with paginated command help.

@@ -8,7 +8,6 @@ import (
 	IO "go-browser/IO"
 	searchbrowser "go-browser/search-browser"
 	"go-browser/site"
-	Site "go-browser/site"
 	utils "go-browser/utils"
 )
 
@@ -75,11 +74,13 @@ func HandleGoogle() {
 
 func HandleSitePerformance() {
 	url := utils.UserWriteString("Enter site URL to test performance:")
+	live := utils.UserWriteBool("Enable live monitoring? (true/false):")
 	timeout := 10 * time.Second
-	err := Site.MeasureSitePerformance(url, timeout)
+	err := site.MeasureSitePerformance(url, timeout, live)
 	if err != nil {
 		fmt.Println("Error:", err)
 	}
+
 }
 
 func HandleSiteContent() {
