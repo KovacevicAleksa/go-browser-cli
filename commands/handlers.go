@@ -90,10 +90,15 @@ func HandleSitePerformance() {
 func HandleSiteContent() {
 	url := utils.UserWriteString("Enter site URL:")
 	element := utils.UserWriteString("Specify the target element (or leave empty for all):")
-	includeAttributes := utils.UserWriteBool("(true/false) Include attributes in HTML elements?")
-	filter := utils.UserWriteBool("(true/false) Filter unnecessary elements like scripts?")
+	includeAttributes := utils.UserWriteBool("(true/False) Include attributes in HTML elements?")
+	filter := utils.UserWriteBool("(True/false) Filter unnecessary elements like scripts?")
+	langBool := utils.UserWriteBool("(True/false) Default language en-US")
+	Lang := "en-US"
+	if !langBool {
+		Lang = utils.UserWriteString("Language: (en-US, es-ES, zh-CN..)")
+	}
 
-	content, err := site.SiteContent(url, element, includeAttributes, filter)
+	content, err := site.SiteContent(url, element, Lang, includeAttributes, filter)
 	if err != nil {
 		fmt.Println("Error:", err)
 	} else {
@@ -102,7 +107,7 @@ func HandleSiteContent() {
 
 		save := utils.UserWriteBool("(true/false) Save content?")
 		if save {
-			name := utils.UserWriteString("Enter file name to save content:")
+			name := utils.UserWriteString("Enter file name to save content: (.text)")
 			IO.CreateFile(name, content)
 		}
 	}

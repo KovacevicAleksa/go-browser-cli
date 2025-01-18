@@ -9,9 +9,18 @@ import (
 )
 
 // SiteContent fetches clean HTML content from a given URL with advanced filtering.
-func SiteContent(url string, element string, includeAttributes, filter bool) (string, error) {
-	// Perform the GET request
-	resp, err := http.Get(url)
+func SiteContent(url, element string, lang string, includeAttributes, filter bool) (string, error) {
+	// Create a new HTTP request
+	req, err := http.NewRequest("GET", url, nil)
+	if err != nil {
+		return "", fmt.Errorf("failed to create HTTP request: %w", err)
+	}
+
+	req.Header.Set("Accept-Language", lang)
+
+	// Perform the HTTP request
+	client := &http.Client{}
+	resp, err := client.Do(req)
 	if err != nil {
 		return "", fmt.Errorf("failed to access the site: %w", err)
 	}
