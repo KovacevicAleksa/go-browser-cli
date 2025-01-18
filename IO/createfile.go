@@ -2,19 +2,20 @@ package IO
 
 import (
 	"fmt"
+	"log"
 	"os"
 	"path/filepath"
 )
 
-func CreateFile(name string, text string) {
+// CreateFile creates a file with the specified name and writes the text to it in a user directory.
+func CreateFile(name string, text string) error {
 	// Define the folder name
 	folderName := "user_files"
 
-	// Ensure the folder exists
+	// Ensure the folder exists with appropriate permissions
 	err := os.MkdirAll(folderName, os.ModePerm)
 	if err != nil {
-		fmt.Printf("Error creating folder %s: %v\n", folderName, err)
-		return
+		return fmt.Errorf("error creating folder %s: %w", folderName, err)
 	}
 
 	// Build the full file path
@@ -23,21 +24,20 @@ func CreateFile(name string, text string) {
 	// Create the file
 	file, err := os.Create(filePath)
 	if err != nil {
-		fmt.Printf("Error creating file %s: %v\n", filePath, err)
-		return
+		return fmt.Errorf("error creating file %s: %w", filePath, err)
 	}
 	defer func() {
 		if cerr := file.Close(); cerr != nil {
-			fmt.Printf("Error closing file %s: %v\n", filePath, cerr)
+			log.Printf("error closing file %s: %v", filePath, cerr)
 		}
 	}()
 
 	// Write the text to the file
 	_, err = file.WriteString(text)
 	if err != nil {
-		fmt.Printf("Error writing to file %s: %v\n", filePath, err)
-		return
+		return fmt.Errorf("error writing to file %s: %w", filePath, err)
 	}
 
-	fmt.Printf("File created successfully: %s\n", file.Name())
+	log.Printf("File created successfully: %s", file.Name())
+	return nil
 }
