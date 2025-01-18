@@ -105,9 +105,9 @@ func HandleSiteContent() {
 		fmt.Println("Extracted Content:")
 		fmt.Println(content)
 
-		save := utils.UserWriteBool("(true/false) Save content?")
+		save := utils.UserWriteBool("(true/False) Save content?")
 		if save {
-			name := utils.UserWriteString("Enter file name to save content: (.text)")
+			name := utils.UserWriteString("Enter file name to save content: (.text,.html...)")
 			IO.CreateFile(name, content)
 		}
 	}

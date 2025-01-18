@@ -6,10 +6,23 @@ import (
 )
 
 func UserWriteBool(prompt string) bool {
-	fmt.Println(prompt)
+	for {
+		fmt.Println(prompt)
 
-	var input string
-	fmt.Scanln(&input)
+		var input string
+		fmt.Scanln(&input)
 
-	return strings.ToLower(input) == "true"
+		// Normalize input to lowercase
+		normalizedInput := strings.ToLower(strings.TrimSpace(input))
+
+		// Check if the input is valid
+		if normalizedInput == "true" {
+			return true
+		} else if normalizedInput == "false" {
+			return false
+		}
+
+		// If input is invalid, inform the user and repeat the prompt
+		fmt.Println("Invalid input. Please enter 'true' or 'false'.")
+	}
 }
