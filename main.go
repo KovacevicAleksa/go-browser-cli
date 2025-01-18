@@ -41,10 +41,16 @@ func main() {
 		commandMap[cmd.Command] = cmd.Handler
 	}
 
+	// Validation check for  Completer func
+	autoCompleter, err := utils.Completer(commandsList)
+	if err != nil {
+		log.Fatalf("Failed to create completer: %v", err)
+	}
+
 	// Initialize readline
 	rl, err := readline.NewEx(&readline.Config{
 		Prompt:          "Enter command: ",
-		AutoComplete:    utils.Completer(commandsList),
+		AutoComplete:    autoCompleter,
 		InterruptPrompt: "^C",
 		EOFPrompt:       "exit",
 	})
