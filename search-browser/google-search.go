@@ -1,97 +1,89 @@
 package searchbrowser
 
 import (
+	"encoding/json"
 	"fmt"
 	"io"
+	"log"
 	"net/http"
 	"net/url"
-	"strings"
+	"os"
 
-	"golang.org/x/net/html"
+	"github.com/joho/godotenv"
 )
 
-// SearchGoogle sends a search query to Google and returns a list of URLs from the search results.
-func SearchGoogle(query string) ([]string, error) {
-	// Base URL for Google search
-	baseURL := "https://www.google.com/search"
+const googleAPIBaseURL = "https://www.googleapis.com/customsearch/v1"
 
-	// Add query parameters
-	params := url.Values{}
-	params.Add("q", query)
-	searchURL := fmt.Sprintf("%s?%s", baseURL, params.Encode())
-
-	// Create an HTTP GET request
-	req, err := http.NewRequest("GET", searchURL, nil)
+// loadEnv loads environment variables from a .env file.
+func loadEnv() {
+	err := godotenv.Load()
 	if err != nil {
-		return nil, err
+		log.Fatal("Error loading .env file")
+	}
+}
+
+// SearchResult represents the structure of the search result from the API.
+type SearchResult struct {
+	Items []struct {
+		Title string `json:"title"`
+		Link  string `json:"link"`
+	} `json:"items"`
+}
+
+// SearchGoogle uses Google Custom Search JSON API to perform a search.
+func SearchGoogle(query string) ([]string, error) {
+
+	loadEnv()
+
+	// Get API key and Custom Search Engine ID from environment variables
+	apiKey := os.Getenv("API_KEY")
+	searchEngineID := os.Getenv("CSE_ID")
+
+	// Ensure API Key and CSE ID are loaded correctly
+	if apiKey == "" || searchEngineID == "" {
+		return nil, fmt.Errorf("missing API Key or CSE ID")
 	}
 
-	// Set User-Agent to avoid being blocked by Google
-	req.Header.Set("User-Agent", "Mozilla/5.0 (compatible; Go-http-client/1.1)")
+	// Prepare URL parameters for the search query
+	params := url.Values{}
+	params.Add("key", apiKey)        // Add API key to query parameters
+	params.Add("cx", searchEngineID) // Add Custom Search Engine ID to query parameters
+	params.Add("q", query)           // Add the search query to parameters
 
-	// Send the HTTP request
-	client := &http.Client{}
-	resp, err := client.Do(req)
+	// Final URL for the API request
+	searchURL := fmt.Sprintf("%s?%s", googleAPIBaseURL, params.Encode())
+
+	// Create HTTP GET request
+	resp, err := http.Get(searchURL)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("failed to send request: %v", err)
 	}
 	defer resp.Body.Close()
+
+	// Check HTTP status code
+	if resp.StatusCode != http.StatusOK {
+		return nil, fmt.Errorf("unexpected HTTP status: %s", resp.Status)
+	}
 
 	// Read the response body
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("failed to read response body: %v", err)
 	}
 
-	// Parse the HTML response
-	doc, err := html.Parse(strings.NewReader(string(body)))
+	// Parse the JSON response
+	var result SearchResult
+	err = json.Unmarshal(body, &result)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("failed to parse JSON: %v", err)
 	}
 
-	// Extract URLs from the HTML document
-	var urls []string
-	var extractLinks func(*html.Node)
-
-	extractLinks = func(n *html.Node) {
-		if n.Type == html.ElementNode && n.Data == "a" {
-			for _, attr := range n.Attr {
-				if attr.Key == "href" {
-					href := attr.Val
-
-					// Filter out non-relevant links
-					if strings.HasPrefix(href, "/url?q=") {
-						// Extract the actual URL from the query parameter
-						parsedURL := strings.Split(href, "&")[0]
-						cleanURL := strings.TrimPrefix(parsedURL, "/url?q=")
-
-						// Skip unwanted links (maps, accounts, support, etc.)
-						if !strings.Contains(cleanURL, "maps.google.com") &&
-							!strings.Contains(cleanURL, "support.google.com") &&
-							!strings.Contains(cleanURL, "accounts.google.com") {
-							urls = append(urls, cleanURL)
-						}
-					}
-				}
-			}
-		}
-		for c := n.FirstChild; c != nil; c = c.NextSibling {
-			extractLinks(c)
-		}
-	}
-
-	// Start parsing from the root node
-	extractLinks(doc)
-
-	// Format the output with site names and URLs
+	// Process the search results
 	var formattedOutput []string
-	for _, u := range urls {
-		parsedURL, err := url.Parse(u)
-		if err == nil {
-			host := parsedURL.Hostname()
-			formattedOutput = append(formattedOutput, fmt.Sprintf("NAME: %s, URL: %s\n", host, u))
-		}
+	for _, item := range result.Items {
+		// Format each result with title and URL
+		formattedOutput = append(formattedOutput, fmt.Sprintf("NAME: %s, URL: %s\n", item.Title, item.Link))
 	}
 
-	return formattedOutput, nil
+	return formattedOutput, nil // Return the formatted search results
 }

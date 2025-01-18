@@ -64,11 +64,15 @@ func HandleAIChat() {
 
 func HandleGoogle() {
 	search := utils.UserWriteString("Enter text for search:")
+
 	result, err := searchbrowser.SearchGoogle(search)
 	if err != nil {
 		fmt.Println("Error:", err)
-	} else {
-		fmt.Println(result)
+		return
+	}
+
+	for _, res := range result {
+		fmt.Println(res)
 	}
 }
 
