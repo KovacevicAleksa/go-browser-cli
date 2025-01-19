@@ -62,7 +62,8 @@ func HandleAbout() {
 
 // HandleList lists all files in the current directory.
 func HandleList() {
-	IO.ListFile(".")
+	path := utils.UserWriteString("Enter Path: (. for main folder)")
+	IO.ListFile(path)
 }
 
 // HandleAIChat prompts the user for text and sends it to the AI model for a response.
