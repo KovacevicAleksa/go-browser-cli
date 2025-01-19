@@ -143,3 +143,39 @@ func HandleSiteContent() {
 		}
 	}
 }
+
+func HandleHttpRequest() {
+	// Get the URL input from the user
+	url := utils.UserWriteString("Enter URL for Fetch:")
+
+	// Example: https://jsonplaceholder.typicode.com/posts
+	// POST
+	// {"id":101,"title":"foo","body":"bar","userId":1}
+	method := utils.UserWriteString("Enter method:")
+
+	// Get JSON body input if needed (for POST method)
+	bodyContent := utils.UserWriteJson("Enter Body:")
+
+	// If the method is POST, format the body as JSON
+	var body []byte
+	if method == "POST" && bodyContent != "" {
+		body = []byte(bodyContent)
+	} else if method == "POST" && bodyContent == "" {
+		// Body cannot be empty for POST method
+		fmt.Println("For POST method, the body cannot be empty.")
+		return
+	} else {
+		// For GET method, the body is empty
+		body = nil
+	}
+
+	// Call the HTTP request function with the given parameters
+	response, statusCode, err := site.HttpRequest(url, method, body)
+	if err != nil {
+		// Handle errors if the HTTP request fails
+		fmt.Println("Error:", err)
+	} else {
+		// Print the response and status code
+		fmt.Printf("Response: %s\nStatus Code: %d\n", response, statusCode)
+	}
+}
