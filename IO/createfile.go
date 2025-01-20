@@ -8,10 +8,12 @@ import (
 )
 
 // CreateFile creates a file with the specified name and writes the text to it in a user directory.
-func CreateFile(name string, text string) error {
+func CreateFile(name string, text string, path string) error {
 	// Define the folder name
-	folderName := "user_files"
-
+	folderName := "user_files/."
+	if path != "" {
+		folderName = filepath.Join(folderName, path)
+	}
 	// Ensure the folder exists with appropriate permissions
 	err := os.MkdirAll(folderName, os.ModePerm)
 	if err != nil {

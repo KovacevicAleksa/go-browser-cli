@@ -20,7 +20,7 @@ func main() {
 	commandHandlers := []types.CommandHandler{
 		{Command: "/help", Handler: commands.HandleHelp, Description: "Displays the list of available commands"},
 		{Command: "/exit", Handler: commands.HandleExit, Description: "Exits the application"},
-		{Command: "/create", Handler: commands.HandleCreate, Description: "Creates a new item"},
+		{Command: "/create", Handler: commands.HandleCreate, Description: "Creates a new file"},
 		{Command: "/read", Handler: commands.HandleRead, Description: "Reads an item"},
 		{Command: "/delete", Handler: commands.HandleDelete, Description: "Deletes an item"},
 		{Command: "/update", Handler: commands.HandleUpdate, Description: "Updates an item"},

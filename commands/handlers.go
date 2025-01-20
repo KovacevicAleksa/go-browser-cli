@@ -26,7 +26,8 @@ func HandleExit() {
 func HandleCreate() {
 	name := utils.UserWriteString("Enter file name:")
 	text := utils.UserWriteString("Enter file content:")
-	IO.CreateFile(name, text)
+	path := utils.UserWriteString("Enter path: (press enter for main folder)")
+	IO.CreateFile(name, text, path)
 }
 
 // HandleRead prompts the user for a file name and reads the content of the file.
@@ -136,7 +137,8 @@ func HandleSiteContent() {
 	save := utils.UserWriteBool("(true/false) Save content?")
 	if save {
 		name := utils.UserWriteString("Enter file name to save content: (.text, .html...)")
-		if err := IO.CreateFile(name, content); err != nil {
+		path := utils.UserWriteString("Enter path: (press enter for main folder)")
+		if err := IO.CreateFile(name, content, path); err != nil {
 			fmt.Printf("Failed to save content to file: %v\n", err)
 		} else {
 			fmt.Println("Content saved successfully.")
