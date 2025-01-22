@@ -2,6 +2,7 @@ package commands
 
 import (
 	"fmt"
+	"os"
 	"time"
 
 	AI "go-browser/AI"
@@ -20,6 +21,7 @@ func HandleHelp() {
 // HandleExit prints a message and exits the program.
 func HandleExit() {
 	fmt.Println("Exiting program.")
+	os.Exit(1)
 }
 
 // HandleCreate prompts the user for a file name and content, then creates the file.
