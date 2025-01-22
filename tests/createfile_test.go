@@ -12,7 +12,7 @@ func TestCreateFile(t *testing.T) {
 	content := "This is a test file."
 
 	// Call the function to test
-	IO.CreateFile(filename, content, "")
+	IO.CreateFile(filename, content, "", true)
 
 	// Build the expected file path
 	expectedFilePath := filepath.Join("user_files", filename)
