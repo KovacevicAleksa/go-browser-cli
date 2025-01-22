@@ -2,7 +2,6 @@ package IO
 
 import (
 	"fmt"
-	"go-browser/utils"
 	"log"
 	"os"
 	"path/filepath"
@@ -11,23 +10,14 @@ import (
 // CreateFile creates a file with the specified name and writes the text to it in a user directory.
 func CreateFile(name string, text string, path string) error {
 	// Define the folder name
-	folderName := "user_files/."
+	folderName := "user_files"
 	if path != "" {
 		folderName = filepath.Join(folderName, path)
 	}
 
-	// Ensure the folder exists if not ask to create
-	if _, err := os.Stat(folderName); os.IsNotExist(err) {
-		fmt.Println(folderName, "does not exist")
-		b := utils.UserWriteBool("Create folder (true/false)")
-		if b {
-			err := os.MkdirAll(folderName, os.ModePerm)
-			if err != nil {
-				return fmt.Errorf("error creating folder %s: %w", folderName, err)
-			}
-		}
-	} else {
-		fmt.Println("The provided directory named", folderName, "exists")
+	// Ensure the folder exists or interactively ask the user
+	if err := CreateFolder(folderName); err != nil {
+		return fmt.Errorf("failed to create folder %s: %w", folderName, err)
 	}
 
 	// Build the full file path

@@ -35,7 +35,8 @@ func HandleCreate() {
 // HandleRead prompts the user for a file name and reads the content of the file.
 func HandleRead() {
 	name := utils.UserWriteString("Enter file name for reading:")
-	IO.ReadFile(name)
+	path := utils.UserWriteString("Enter path: (press enter for main folder)")
+	IO.ReadFile(name, path)
 }
 
 // HandleDelete prompts the user for a file name and deletes the file.

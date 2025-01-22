@@ -6,12 +6,16 @@ import (
 	"path/filepath"
 )
 
-func ReadFile(name string) {
+func ReadFile(name string, path string) {
 	// Define the folder name
 	folderName := "user_files"
 
 	// Build the full file path
-	filePath := filepath.Join(folderName, name)
+	filePath := filepath.Join(folderName, path, name)
+
+	if PathExists(filePath) {
+		fmt.Printf(filePath, "file dont exist")
+	}
 
 	fmt.Printf("Reading file: %s\n", filePath)
 
