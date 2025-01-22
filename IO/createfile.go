@@ -2,6 +2,7 @@ package IO
 
 import (
 	"fmt"
+	"go-browser/utils"
 	"log"
 	"os"
 	"path/filepath"
@@ -15,9 +16,15 @@ func CreateFile(name string, text string, path string) error {
 		folderName = filepath.Join(folderName, path)
 	}
 
-	// Ensure the folder exists or interactively ask the user
-	if err := CreateFolder(folderName); err != nil {
-		return fmt.Errorf("failed to create folder %s: %w", folderName, err)
+	if !PathExists(folderName) {
+		fmt.Println("Path doesn't exist")
+		b := utils.UserWriteBool("Create folder? (true/false)")
+		if b {
+			// Ensure the folder exists or interactively ask the user
+			if err := CreateFolder(folderName); err != nil {
+				return fmt.Errorf("failed to create folder %s: %w", folderName, err)
+			}
+		}
 	}
 
 	// Build the full file path
