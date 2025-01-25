@@ -6,13 +6,13 @@ import (
 	"path/filepath"
 )
 
-func RenameFile(oldName string, newName string) {
+func RenameFile(oldName string, newName string, path string) {
 	// Define the folder name
 	folderName := "user_files"
 
 	// Build the full file paths
-	oldFilePath := filepath.Join(folderName, oldName)
-	newFilePath := filepath.Join(folderName, newName)
+	oldFilePath := filepath.Join(folderName, path, oldName)
+	newFilePath := filepath.Join(folderName, path, newName)
 
 	// Check if the old file exists
 	if _, err := os.Stat(oldFilePath); os.IsNotExist(err) {

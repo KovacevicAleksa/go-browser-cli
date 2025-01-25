@@ -56,7 +56,8 @@ func HandleUpdate() {
 func HandleRename() {
 	name := utils.UserWriteString("Enter file name to rename:")
 	newName := utils.UserWriteString("Enter new file name:")
-	IO.RenameFile(name, newName)
+	path := utils.UserWriteString("Enter Path:")
+	IO.RenameFile(name, newName, path)
 }
 
 // HandleAbout displays information about the program version.
