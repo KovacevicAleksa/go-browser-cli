@@ -2,6 +2,7 @@ package IO
 
 import (
 	"fmt"
+	"log"
 	"os"
 	"path/filepath"
 )
@@ -16,14 +17,14 @@ func RenameFile(oldName string, newName string, path string) {
 
 	// Check if the old file exists
 	if _, err := os.Stat(oldFilePath); os.IsNotExist(err) {
-		fmt.Printf("File %s does not exist.\n", oldFilePath)
+		log.Printf("WARN: File %s does not exist.\n", oldFilePath)
 		return
 	}
 
 	// Rename the file
 	err := os.Rename(oldFilePath, newFilePath)
 	if err != nil {
-		fmt.Printf("Error renaming file from %s to %s: %v\n", oldFilePath, newFilePath, err)
+		log.Printf("ERROR: Error renaming file from %s to %s: %v\n", oldFilePath, newFilePath, err)
 		return
 	}
 

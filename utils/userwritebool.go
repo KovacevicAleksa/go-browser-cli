@@ -2,6 +2,7 @@ package utils
 
 import (
 	"fmt"
+	"log"
 	"strings"
 )
 
@@ -23,6 +24,6 @@ func UserWriteBool(prompt string) bool {
 		}
 
 		// If input is invalid, inform the user and repeat the prompt
-		fmt.Println("Invalid input. Please enter 'true' or 'false'.")
+		log.Println("WARN: Invalid input. Please enter 'true' or 'false'.")
 	}
 }

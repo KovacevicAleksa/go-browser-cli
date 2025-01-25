@@ -2,6 +2,7 @@ package utils
 
 import (
 	"fmt"
+	"log"
 	"os"
 
 	"golang.org/x/term"
@@ -11,7 +12,7 @@ import (
 func PrintDashedLine() {
 	width, _, err := term.GetSize(int(os.Stdout.Fd()))
 	if err != nil {
-		fmt.Println("Error getting terminal width:", err)
+		log.Println("ERROR: Error getting terminal width:", err)
 
 	}
 

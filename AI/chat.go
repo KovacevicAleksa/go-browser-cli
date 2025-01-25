@@ -3,7 +3,7 @@ package AI
 import (
 	"bytes"
 	"encoding/json"
-	"fmt"
+	"log"
 	"net/http"
 	"os"
 
@@ -29,14 +29,14 @@ func ChatGPT(input string) string {
 	// Load .env file
 	err := godotenv.Load()
 	if err != nil {
-		fmt.Println("Error loading .env file")
+		log.Println("ERROR: Error loading .env file")
 		return ""
 	}
 
 	// Get API key from environment variable
 	apiKey := os.Getenv("OPENROUTER_API_KEY")
 	if apiKey == "" {
-		fmt.Println("API key is missing")
+		log.Println("ERROR: API key is missing")
 		return ""
 	}
 
@@ -58,14 +58,14 @@ func ChatGPT(input string) string {
 
 	reqBody, err := json.Marshal(requestBody)
 	if err != nil {
-		fmt.Println("Error marshaling request:", err)
+		log.Println("ERROR: Error marshaling request:", err)
 		return ""
 	}
 
 	// Create the HTTP request
 	req, err := http.NewRequest("POST", apiURL, bytes.NewBuffer(reqBody))
 	if err != nil {
-		fmt.Println("Error creating request:", err)
+		log.Println("ERROR: Error creating request:", err)
 		return ""
 	}
 
@@ -77,7 +77,7 @@ func ChatGPT(input string) string {
 	client := &http.Client{}
 	resp, err := client.Do(req)
 	if err != nil {
-		fmt.Println("Error sending request:", err)
+		log.Println("ERROR: Error sending request:", err)
 		return ""
 	}
 	defer resp.Body.Close()
@@ -86,7 +86,7 @@ func ChatGPT(input string) string {
 	var responseBody ResponseBody
 	err = json.NewDecoder(resp.Body).Decode(&responseBody)
 	if err != nil {
-		fmt.Println("Error decoding response:", err)
+		log.Println("ERROR: Error decoding response:", err)
 		return ""
 	}
 

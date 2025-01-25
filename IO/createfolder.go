@@ -18,7 +18,9 @@ func CreateFolder(folderName string) error {
 		if err := os.MkdirAll(folderName, os.ModePerm); err != nil {
 			return fmt.Errorf("error creating folder '%s': %w", folderName, err)
 		}
-		log.Printf("Folder created successfully: %s", folderName)
+		log.Printf("INFO: Folder created successfully: %s", folderName)
+	} else {
+		log.Printf("INFO: Folder already exists: %s", folderName)
 	}
 
 	return nil
@@ -28,6 +30,7 @@ func CreateFolder(folderName string) error {
 func PathExists(path string) bool {
 	info, err := os.Stat(path)
 	if os.IsNotExist(err) {
+		log.Printf("WARN: Path does not exist: %s", path)
 		return false
 	}
 	return info.IsDir()

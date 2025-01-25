@@ -1,16 +1,24 @@
 package Boot
 
 import (
-	"log"
+	"fmt"
 	"os"
 )
 
 func setupFolder(folderName string) error {
-	// Ensure the folder exists
-	err := os.MkdirAll(folderName, os.ModePerm)
-	if err != nil {
-		log.Fatalf("error creating folder %s: %v", folderName, err)
+	_, err := os.Stat(folderName)
+	if err == nil {
+		// Folder exists, no need to create it
+		return nil
+	} else if os.IsNotExist(err) {
+		// Folder doesn't exist, create it
+		err = os.MkdirAll(folderName, os.ModePerm)
+		if err != nil {
+			return err
+		}
+		fmt.Printf("INFO: User folder %s created successfully\n", folderName)
+		return nil
+	} else {
+		return err
 	}
-	log.Printf("INFO: Main Folder created successfully: [%s]\n", folderName)
-	return nil
 }

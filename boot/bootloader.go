@@ -1,6 +1,7 @@
 package Boot
 
 import (
+	"fmt"
 	utils "go-browser/utils"
 	"log"
 )
@@ -13,12 +14,12 @@ func BootLoader() {
 	// Define the folder name and ensure its existence
 	const folderName = "user_files/logs"
 	if err := setupFolder(folderName); err != nil {
-		log.Fatalf("Boot failed: %v", err)
+		log.Fatalf("ERROR: Boot failed: %v", err)
 	}
 
 	// Initialize logger
 	configureLogger()
 
-	log.Printf("INFO: System booted successfully. Folder created: %s", folderName)
+	fmt.Println("INFO: System booted successfully")
 
 }

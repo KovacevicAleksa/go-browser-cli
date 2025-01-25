@@ -3,6 +3,7 @@ package site
 import (
 	"fmt"
 	"io"
+	"log"
 	"net/http"
 	"time"
 )
@@ -71,7 +72,7 @@ func (s *SitePerformanceChecker) Monitor(interval time.Duration) {
 		select {
 		case <-ticker.C:
 			if err := s.PerformRequest(); err != nil {
-				fmt.Println("Error:", err)
+				log.Println("Error: ", err)
 			}
 		}
 	}

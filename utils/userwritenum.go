@@ -2,6 +2,7 @@ package utils
 
 import (
 	"fmt"
+	"log"
 	"strconv"
 )
 
@@ -18,7 +19,7 @@ func UserWriteNum(text string) int {
 			number = num
 			break
 		} else {
-			fmt.Println("Not a valide number")
+			log.Println("WARN: Not a valide number")
 		}
 	}
 	return number

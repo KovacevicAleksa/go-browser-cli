@@ -2,6 +2,7 @@ package IO
 
 import (
 	"fmt"
+	"log"
 	"os"
 	"path/filepath"
 )
@@ -14,7 +15,7 @@ func ListFile(folderName string) {
 	// Open the directory
 	dir, err := os.Open(folderPath)
 	if err != nil {
-		fmt.Printf("Error opening directory %s: %v\n", folderPath, err)
+		log.Printf("ERROR: Error opening directory %s: %v\n", folderPath, err)
 		return
 	}
 	defer dir.Close()
@@ -22,7 +23,7 @@ func ListFile(folderName string) {
 	// Read the directory entries
 	files, err := dir.Readdir(-1) // -1 means read all files and directories
 	if err != nil {
-		fmt.Printf("Error reading directory %s: %v\n", folderPath, err)
+		log.Printf("ERROR: Error reading directory %s: %v\n", folderPath, err)
 		return
 	}
 

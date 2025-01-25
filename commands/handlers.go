@@ -2,6 +2,8 @@ package commands
 
 import (
 	"fmt"
+	"log"
+	"log/slog"
 	"os"
 	"time"
 
@@ -20,7 +22,7 @@ func HandleHelp() {
 
 // HandleExit prints a message and exits the program.
 func HandleExit() {
-	fmt.Println("Exiting program.")
+	log.Println("INFO: Exiting program.")
 	os.Exit(0)
 }
 
@@ -62,7 +64,7 @@ func HandleRename() {
 
 // HandleAbout displays information about the program version.
 func HandleAbout() {
-	fmt.Println("Version 0.0.0 - Go Browser Tool")
+	fmt.Println("INFO: Version 0.0.0 - Go Browser Tool")
 }
 
 // HandleList lists all files in the current directory.
@@ -75,7 +77,7 @@ func HandleList() {
 func HandleAIChat() {
 	text := utils.UserWriteString("Enter text:")
 	response := AI.ChatGPT(text)
-	fmt.Println(response)
+	fmt.Println("AI Response:", response)
 }
 
 // HandleGoogle prompts the user for search text and performs a Google search.
@@ -84,13 +86,13 @@ func HandleGoogle() {
 
 	result, err := searchbrowser.SearchGoogle(search)
 	if err != nil {
-		fmt.Println("Error:", err)
+		log.Println("ERROR: Error:", err)
 		return
 	}
 
 	// Display the search results
 	for _, res := range result {
-		fmt.Println(res)
+		fmt.Println("Search Result:", res)
 	}
 }
 
@@ -101,7 +103,7 @@ func HandleSitePerformance() {
 	timeout := 10 * time.Second
 	err := site.MeasureSitePerformance(url, timeout, live)
 	if err != nil {
-		fmt.Println("Error:", err)
+		log.Println("ERROR: Error:", err)
 	}
 }
 
@@ -129,13 +131,12 @@ func HandleSiteContent() {
 	// Call SiteContent with the SiteOptions instance
 	content, err := site.SiteContent(options)
 	if err != nil {
-		fmt.Println("Error:", err)
+		log.Println("ERROR: Error:", err)
 		return
 	}
 
 	// Display the extracted content
-	fmt.Println("Extracted Content:")
-	fmt.Println(content)
+	fmt.Println("Extracted Content:", content)
 
 	// Ask the user if they want to save the content
 	save := utils.UserWriteBool("(true/false) Save content?")
@@ -143,9 +144,9 @@ func HandleSiteContent() {
 		name := utils.UserWriteString("Enter file name to save content: (.text, .html...)")
 		path := utils.UserWriteString("Enter path: (press enter for main folder)")
 		if err := IO.CreateFile(name, content, path, false); err != nil {
-			fmt.Printf("Failed to save content to file: %v\n", err)
+			log.Printf("ERROR: Failed to save content to file: %v\n", err)
 		} else {
-			fmt.Println("Content saved successfully.")
+			log.Println("INFO: Content saved successfully.")
 		}
 	}
 }
@@ -168,7 +169,7 @@ func HandleHttpRequest() {
 		body = []byte(bodyContent)
 	} else if method == "POST" && bodyContent == "" {
 		// Body cannot be empty for POST method
-		fmt.Println("For POST method, the body cannot be empty.")
+		log.Println("ERROR: For POST method, the body cannot be empty.")
 		return
 	} else {
 		// For GET method, the body is empty
@@ -179,8 +180,9 @@ func HandleHttpRequest() {
 	response, statusCode, err := site.HttpRequest(url, method, body)
 	if err != nil {
 		// Handle errors if the HTTP request fails
-		fmt.Println("Error:", err)
+		log.Println("ERROR: Error:", err)
 	} else {
+		slog.Info("Response: ", "Status Code", statusCode)
 		// Print the response and status code
 		fmt.Printf("Response: %s\nStatus Code: %d\n", response, statusCode)
 	}

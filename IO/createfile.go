@@ -17,7 +17,7 @@ func CreateFile(name string, text string, path string, userPermissionave bool) e
 	}
 
 	if !PathExists(folderName) {
-		fmt.Println("Path doesn't exist")
+		log.Println("WARN: Path doesn't exist")
 		if !userPermissionave {
 			userPermissionave = utils.UserWriteBool("Create folder? (true/false)")
 		}
@@ -26,6 +26,7 @@ func CreateFile(name string, text string, path string, userPermissionave bool) e
 			if err := CreateFolder(folderName); err != nil {
 				return fmt.Errorf("failed to create folder %s: %w", folderName, err)
 			}
+			log.Printf("INFO: Folder created successfully: %s", folderName)
 		}
 	}
 
@@ -39,7 +40,7 @@ func CreateFile(name string, text string, path string, userPermissionave bool) e
 	}
 	defer func() {
 		if cerr := file.Close(); cerr != nil {
-			log.Printf("error closing file %s: %v", filePath, cerr)
+			log.Printf("ERROR: Error closing file %s: %v", filePath, cerr)
 		}
 	}()
 
@@ -49,6 +50,6 @@ func CreateFile(name string, text string, path string, userPermissionave bool) e
 		return fmt.Errorf("error writing to file %s: %w", filePath, err)
 	}
 
-	log.Printf("File created successfully: %s", file.Name())
+	log.Printf("INFO: File created successfully: %s", file.Name())
 	return nil
 }

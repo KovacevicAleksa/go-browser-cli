@@ -1,11 +1,12 @@
 package IO
 
 import (
-	"fmt"
+	"log"
 	"os"
 	"path/filepath"
 )
 
+// DeleteFile removes the file from the user_files folder and logs the operation.
 func DeleteFile(name string) {
 	// Define the folder name
 	folderName := "user_files"
@@ -16,9 +17,9 @@ func DeleteFile(name string) {
 	// Attempt to delete the file
 	err := os.Remove(filePath)
 	if err != nil {
-		fmt.Printf("Error deleting file %s: %v\n", filePath, err)
+		log.Printf("ERROR: Error deleting file %s: %v", filePath, err)
 		return
 	}
 
-	fmt.Printf("Successfully removed file: %s\n", filePath)
+	log.Printf("INFO: Successfully removed file: %s", filePath)
 }

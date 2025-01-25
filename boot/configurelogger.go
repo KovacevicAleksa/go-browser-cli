@@ -2,7 +2,6 @@ package Boot
 
 import (
 	"log"
-	"os"
 
 	"gopkg.in/natefinch/lumberjack.v2"
 )
@@ -17,14 +16,6 @@ func configureLogger() {
 		MaxAge:     30,                           // Max age in days to retain old logs
 		Compress:   true,                         // Compress rotated files
 	})
+	log.Println("INFO: Logger configured successfully")
 
-	// Define log levels (INFO, WARN, ERROR)
-	infoLog := log.New(os.Stdout, "INFO: ", log.Ldate|log.Ltime|log.Lshortfile)
-	warnLog := log.New(os.Stdout, "WARN: ", log.Ldate|log.Ltime|log.Lshortfile)
-	errorLog := log.New(os.Stderr, "ERROR: ", log.Ldate|log.Ltime|log.Lshortfile)
-
-	// Example usage of different log levels
-	infoLog.Println("Logger initialized for INFO level")
-	warnLog.Println("Logger initialized for WARN level")
-	errorLog.Println("Logger initialized for ERROR level")
 }

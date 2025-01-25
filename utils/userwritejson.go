@@ -3,6 +3,7 @@ package utils
 import (
 	"encoding/json"
 	"fmt"
+	"log"
 )
 
 func UserWriteJson(text string) string {
@@ -16,7 +17,7 @@ func UserWriteJson(text string) string {
 		err := json.Unmarshal([]byte(input), &jsonData)
 
 		if err != nil {
-			fmt.Println("Invalid JSON format. Please try again.")
+			log.Println("WARN: Invalid JSON format. Please try again.")
 		} else {
 			// If input is valid JSON, return it as a string
 			return input
