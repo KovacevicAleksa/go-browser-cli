@@ -56,7 +56,7 @@ func HandleUpdate() {
 func HandleRename() {
 	name := utils.UserWriteString("Enter file name to rename:")
 	newName := utils.UserWriteString("Enter new file name:")
-	path := utils.UserWriteString("Enter Path:")
+	path := utils.UserWriteString("Enter path: (press enter for main folder)")
 	IO.RenameFile(name, newName, path)
 }
 

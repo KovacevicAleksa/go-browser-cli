@@ -1,25 +1,24 @@
 package Boot
 
 import (
-	"fmt"
 	utils "go-browser/utils"
-	"os"
+	"log"
 )
 
+// BootLoader initializes the system, configures the logger, and creates necessary folders
 func BootLoader() {
-
+	// Print a dashed line for a clean log output
 	utils.PrintDashedLine()
 
-	println("Booting system...")
-	// Define the folder name
-	folderName := "user_files"
-
-	// Ensure the folder exists
-	err := os.MkdirAll(folderName, os.ModePerm)
-	if err != nil {
-		fmt.Printf("Error creating folder %s: %v\n", folderName, err)
-		return
+	// Define the folder name and ensure its existence
+	const folderName = "user_files/logs"
+	if err := setupFolder(folderName); err != nil {
+		log.Fatalf("Boot failed: %v", err)
 	}
 
-	fmt.Printf("Main Folder created successfully: [%s]\n", folderName)
+	// Initialize logger
+	configureLogger()
+
+	log.Printf("INFO: System booted successfully. Folder created: %s", folderName)
+
 }
