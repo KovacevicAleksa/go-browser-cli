@@ -73,6 +73,14 @@ func HandleList() {
 	IO.ListFile(path)
 }
 
+func HandleSystemLogs() {
+	path := "user_files/logs"
+	size, err := utils.FolderSize(path)
+	FormatedSize := utils.FormatFileSize(size)
+	fmt.Println(FormatedSize)
+	log.Println(err)
+}
+
 // HandleAIChat prompts the user for text and sends it to the AI model for a response.
 func HandleAIChat() {
 	text := utils.UserWriteString("Enter text:")

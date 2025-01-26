@@ -27,6 +27,7 @@ func main() {
 		{Command: "/rename", Handler: commands.HandleRename, Description: "Renames an item"},
 		{Command: "/about", Handler: commands.HandleAbout, Description: "Displays information about the application"},
 		{Command: "/list", Handler: commands.HandleList, Description: "Lists all items"},
+		{Command: "/size", Handler: commands.HandleSystemLogs, Description: "Size of user folder"},
 		{Command: "/aichat", Handler: commands.HandleAIChat, Description: "Starts an AI chat session"},
 		{Command: "/google", Handler: commands.HandleGoogle, Description: "Searches Google"},
 		{Command: "/siteperformance", Handler: commands.HandleSitePerformance, Description: "Analyzes site performance"},
