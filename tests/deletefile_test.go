@@ -11,12 +11,15 @@ func TestDeleteFile(t *testing.T) {
 	filename := "test_delete.txt"
 	content := "This is a test file for deletion."
 
-	// Ensure the folder exists
-	os.MkdirAll("user_files", os.ModePerm)
+	// Ensure the folder exists and handle errors
+	err := os.MkdirAll("user_files", os.ModePerm)
+	if err != nil {
+		t.Fatalf("Failed to create directory user_files: %v", err)
+	}
 
 	// Create a file to be deleted
 	filePath := filepath.Join("user_files", filename)
-	err := os.WriteFile(filePath, []byte(content), 0644)
+	err = os.WriteFile(filePath, []byte(content), 0644)
 	if err != nil {
 		t.Fatalf("Failed to create test file %s: %v", filePath, err)
 	}

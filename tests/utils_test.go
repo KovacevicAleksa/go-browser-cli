@@ -52,7 +52,10 @@ func TestUserWriteNum(t *testing.T) {
 	os.Stdin = r
 	defer func() { os.Stdin = oldStdin }() // Ensure to restore stdin after the test
 	go func() {
-		w.Write([]byte(input))
+		_, err := w.Write([]byte(input))
+		if err != nil {
+			t.Errorf("Error writing to pipe: %v", err)
+		}
 		w.Close()
 	}()
 
@@ -74,7 +77,10 @@ func TestUserWriteString(t *testing.T) {
 	os.Stdin = r
 	defer func() { os.Stdin = oldStdin }() // Ensure to restore stdin after the test
 	go func() {
-		w.Write([]byte(input))
+		_, err := w.Write([]byte(input))
+		if err != nil {
+			t.Errorf("Error writing to pipe: %v", err)
+		}
 		w.Close()
 	}()
 
@@ -104,7 +110,10 @@ func TestUserWriteBool(t *testing.T) {
 		r, w, _ := os.Pipe()
 		os.Stdin = r
 		go func(input string) {
-			w.Write([]byte(input))
+			_, err := w.Write([]byte(input))
+			if err != nil {
+				t.Errorf("Error writing to pipe: %v", err)
+			}
 			w.Close()
 		}(tt.input)
 

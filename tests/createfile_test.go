@@ -11,8 +11,10 @@ func TestCreateFile(t *testing.T) {
 	filename := "test_create.txt"
 	content := "This is a test file."
 
-	// Call the function to test
-	IO.CreateFile(filename, content, "", true)
+	err := IO.CreateFile(filename, content, "", true)
+	if err != nil {
+		t.Fatalf("Failed to create file: %v", err)
+	}
 
 	// Build the expected file path
 	expectedFilePath := filepath.Join("user_files", filename)
