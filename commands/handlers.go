@@ -51,7 +51,7 @@ func HandleDelete() {
 func HandleUpdate() {
 	name := utils.UserWriteString("Enter file name for update:")
 	text := utils.UserWriteString("Enter new content:")
-	IO.UpdateFile(name, text)
+	IO.UpdateFile(name, text, false)
 }
 
 // HandleRename prompts the user for a file name and a new name, then renames the file.

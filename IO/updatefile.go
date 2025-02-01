@@ -7,7 +7,7 @@ import (
 	"path/filepath"
 )
 
-func UpdateFile(name string, text string) {
+func UpdateFile(name string, text string, overwrite bool) {
 	// Define the folder name
 	folderName := "user_files"
 
@@ -20,8 +20,16 @@ func UpdateFile(name string, text string) {
 		return
 	}
 
-	// Open the file in write-only mode, truncating it if it exists
-	file, err := os.OpenFile(filePath, os.O_WRONLY|os.O_TRUNC, 0644)
+	// Determine the file opening mode based on the overwrite parameter
+	fileMode := os.O_WRONLY
+	if overwrite {
+		fileMode |= os.O_TRUNC // Truncate the file if overwrite is true
+	} else {
+		fileMode |= os.O_APPEND // Append to the file if overwrite is false
+	}
+
+	// Open the file with the appropriate mode
+	file, err := os.OpenFile(filePath, fileMode, 0644)
 	if err != nil {
 		log.Printf("ERROR: opening file %s: %v\n", filePath, err)
 		return
@@ -32,10 +40,10 @@ func UpdateFile(name string, text string) {
 		}
 	}()
 
-	// Write the provided text to the file
+	// Write the text to the file
 	_, err = file.WriteString(text)
 	if err != nil {
-		log.Printf("ERROR: Error writing to file %s: %v\n", filePath, err)
+		log.Printf("ERROR: writing to file %s: %v\n", filePath, err)
 		return
 	}
 

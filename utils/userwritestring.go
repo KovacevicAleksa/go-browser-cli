@@ -1,18 +1,21 @@
 package utils
 
 import (
+	"bufio"
 	"fmt"
+	"os"
+	"strings"
 )
 
 func UserWriteString(text string) string {
-
 	if text != "" {
 		fmt.Println(text)
 	}
 
-	var first string
+	reader := bufio.NewReader(os.Stdin)
+	input, _ := reader.ReadString('\n')
 
-	fmt.Scanln(&first)
+	input = strings.TrimRight(input, "\n")
 
-	return first
+	return input
 }

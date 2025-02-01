@@ -32,8 +32,7 @@ func main() {
 		{Command: "/google", Handler: commands.HandleGoogle, Description: "Searches Google"},
 		{Command: "/siteperformance", Handler: commands.HandleSitePerformance, Description: "Analyzes site performance"},
 		{Command: "/sitecontent", Handler: commands.HandleSiteContent, Description: "Analyzes site content"},
-		{Command: "/fetchSiteData", Handler: commands.HandleHttpRequest, Description: "Fetches and analyzes HTTP response data from a given URL"},
-	}
+		{Command: "/fetchSiteData", Handler: commands.HandleHttpRequest, Description: "Fetches and analyzes HTTP response data from a given URL"}}
 
 	// Generate the command list for autocompletion
 	commandsList := make([]string, len(commandHandlers))
