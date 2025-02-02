@@ -199,17 +199,17 @@ func HandleHttpRequest() {
 func HandleHistory() {
 	fmt.Println("History commands (delete, view)")
 	command := utils.UserWriteString("Enter command:")
-	path := "../user_files/history/history.txt"
 
-	if !IO.PathExists(path) {
+	if !IO.PathExists("./user_files/history/history.txt") {
 		fmt.Println("History file does not exist.")
 		return
 	}
 
 	switch command {
 	case "delete":
-		IO.DeleteFile(path)
-		log.Println("History file deleted.")
+		//empty file
+		IO.UpdateFile("../user_files/history/history.txt", "", true)
+		fmt.Println("History file deleted.")
 	case "view":
 		IO.ReadFile("history.txt", "../user_files/history")
 	default:

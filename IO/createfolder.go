@@ -33,5 +33,5 @@ func PathExists(path string) bool {
 		log.Printf("WARN: Path does not exist: %s", path)
 		return false
 	}
-	return info.IsDir()
+	return err == nil && info != nil
 }

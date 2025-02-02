@@ -1,7 +1,6 @@
 package Boot
 
 import (
-	"fmt"
 	utils "go-browser/utils"
 	"log"
 )
@@ -17,9 +16,14 @@ func BootLoader() {
 		log.Fatalf("ERROR: Boot failed: %v", err)
 	}
 
+	// Define the file path and ensure its existence
+	const filePath = "user_files/history/history.txt"
+	if err := setupFile(filePath); err != nil {
+		log.Fatalf("ERROR: Boot failed: %v", err)
+	}
+
 	// Initialize logger
 	configureLogger()
 
-	fmt.Println("INFO: System booted successfully")
-
+	log.Println("INFO: System booted successfully")
 }
