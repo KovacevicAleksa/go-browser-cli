@@ -5,6 +5,7 @@ import (
 	"log"
 	"log/slog"
 	"os"
+	"strconv"
 	"time"
 
 	AI "go-browser/AI"
@@ -102,6 +103,9 @@ func HandleGoogle() {
 	for _, res := range result {
 		fmt.Println("Search Result:", res)
 	}
+
+	historytext := "Google search: " + "search " + search + "\n"
+	IO.UpdateFile("../user_files/history/history.txt", historytext, false)
 }
 
 // HandleSitePerformance prompts the user for a URL and performs a performance test on the site.
@@ -157,6 +161,8 @@ func HandleSiteContent() {
 			log.Println("INFO: Content saved successfully.")
 		}
 	}
+	historytext := "SiteContent" + "url " + url + "element: " + element + "includeAttributes " + strconv.FormatBool(includeAttributes) + "langBool " + strconv.FormatBool(langBool) + "lang " + lang + "\n"
+	IO.UpdateFile("../user_files/history/history.txt", historytext, false)
 }
 
 func HandleHttpRequest() {
@@ -168,8 +174,12 @@ func HandleHttpRequest() {
 	// {"id":101,"title":"foo","body":"bar","userId":1}
 	method := utils.UserWriteString("Enter method:")
 
+	var bodyContent string
+
 	// Get JSON body input if needed (for POST method)
-	bodyContent := utils.UserWriteJson("Enter Body:")
+	if method == "POST" {
+		bodyContent = utils.UserWriteJson("Enter Body: {..}")
+	}
 
 	// If the method is POST, format the body as JSON
 	var body []byte
@@ -194,6 +204,8 @@ func HandleHttpRequest() {
 		// Print the response and status code
 		fmt.Printf("Response: %s\nStatus Code: %d\n", response, statusCode)
 	}
+	historytext := "HTTPRequest: " + " url " + url + "method: " + method + "statusCode " + strconv.Itoa(statusCode) + "\n"
+	IO.UpdateFile("../user_files/history/history.txt", historytext, false)
 }
 
 func HandleHistory() {

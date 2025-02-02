@@ -1,6 +1,7 @@
 package Boot
 
 import (
+	"fmt"
 	utils "go-browser/utils"
 	"log"
 )
@@ -25,5 +26,5 @@ func BootLoader() {
 	// Initialize logger
 	configureLogger()
 
-	log.Println("INFO: System booted successfully")
+	fmt.Println("INFO: System booted successfully")
 }
