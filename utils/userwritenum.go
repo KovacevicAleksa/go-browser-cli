@@ -11,15 +11,19 @@ func UserWriteNum(text string) int {
 	var number int
 	for {
 		fmt.Println(text)
-		fmt.Scanln(&input)
+		_, err := fmt.Scanln(&input)
+		if err != nil {
+			log.Println("ERROR: Failed to read input:", err)
+			continue
+		}
 
-		// conver string to num
+		// Convert string to number
 		num, err := strconv.Atoi(input)
 		if err == nil {
 			number = num
 			break
 		} else {
-			log.Println("WARN: Not a valide number")
+			log.Println("WARN: Not a valid number")
 		}
 	}
 	return number

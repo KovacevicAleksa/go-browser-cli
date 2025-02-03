@@ -1,17 +1,24 @@
 package utils
 
 import (
+	"bufio"
 	"fmt"
 	"log"
+	"os"
 	"strings"
 )
 
 func UserWriteBool(prompt string) bool {
+	reader := bufio.NewReader(os.Stdin)
+
 	for {
 		fmt.Println(prompt)
 
-		var input string
-		fmt.Scanln(&input)
+		input, err := reader.ReadString('\n')
+		if err != nil {
+			log.Println("ERROR: Failed to read input:", err)
+			continue
+		}
 
 		// Normalize input to lowercase
 		normalizedInput := strings.ToLower(strings.TrimSpace(input))

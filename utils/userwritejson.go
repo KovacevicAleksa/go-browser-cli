@@ -11,10 +11,14 @@ func UserWriteJson(text string) string {
 
 	for {
 		fmt.Println(text)
-		fmt.Scanln(&input)
+		_, err := fmt.Scanln(&input)
+		if err != nil {
+			log.Println("ERROR: Failed to read input:", err)
+			continue
+		}
 
 		var jsonData map[string]interface{}
-		err := json.Unmarshal([]byte(input), &jsonData)
+		err = json.Unmarshal([]byte(input), &jsonData)
 
 		if err != nil {
 			log.Println("WARN: Invalid JSON format. Please try again.")
