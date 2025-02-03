@@ -13,24 +13,15 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4.2.2
+        uses: actions/checkout@v4
 
       - name: Set up Go
-        uses: actions/setup-go@v5.3.0
+        uses: actions/setup-go@v5
         with:
-          go-version: '1.23.5'
+          go-version: '1.22'
 
-      - name: Clear Go modules cache directory
-        run: rm -rf ~/go/pkg/mod
-
-      - name: Cache Go modules
-        uses: actions/cache@v4
-        with:
-          path: ~/go/pkg/mod
-          key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
-          restore-keys: |
-            ${{ runner.os }}-go-
+      - name: Download Go modules
+        run: go mod download
 
       - name: Run tests
-        run: |
-          go test ./tests/... -v
+        run: go test ./... -v
