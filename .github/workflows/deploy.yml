@@ -1,0 +1,27 @@
+name: Deploy Go Project
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4.2.2
+
+      - name: Set up Go
+        uses: actions/setup-go@v5.3.0
+        with:
+          go-version: '1.23.5'
+
+      - name: Build the application
+        run: |
+          go build -v ./...
+
+      - name: Deploy to Server
+        run: |
+            #depoy
