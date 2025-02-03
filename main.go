@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	boot "go-browser/boot"
+	"go-browser/boot"
 	"go-browser/commands"
 	"go-browser/types"
 	"go-browser/utils"
