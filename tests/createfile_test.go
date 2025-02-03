@@ -1,7 +1,7 @@
 package main
 
 import (
-	"go-browser/IO"
+	io "go-browser/io"
 	"os"
 	"path/filepath"
 	"testing"
@@ -11,7 +11,7 @@ func TestCreateFile(t *testing.T) {
 	filename := "test_create.txt"
 	content := "This is a test file."
 
-	err := IO.CreateFile(filename, content, "", true)
+	err := io.CreateFile(filename, content, "", true)
 	if err != nil {
 		t.Fatalf("Failed to create file: %v", err)
 	}

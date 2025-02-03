@@ -1,7 +1,7 @@
 package main
 
 import (
-	"go-browser/IO"
+	io "go-browser/io"
 	"os"
 	"path/filepath"
 	"testing"
@@ -25,7 +25,7 @@ func TestDeleteFile(t *testing.T) {
 	}
 
 	// Call the function to delete the file
-	IO.DeleteFile(filename)
+	io.DeleteFile(filename)
 
 	// Verify the file was deleted
 	if _, err := os.Stat(filePath); !os.IsNotExist(err) {
