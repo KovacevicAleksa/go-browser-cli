@@ -31,7 +31,10 @@ func HandleCreate() {
 	name := utils.UserWriteString("Enter file name:")
 	text := utils.UserWriteString("Enter file content:")
 	path := utils.UserWriteString("Enter path: (press enter for main folder)")
-	io.CreateFile(name, text, path, true)
+
+	if err := io.CreateFile(name, text, path, true); err != nil {
+		log.Printf("ERROR: Failed to create file: %v", err)
+	}
 }
 
 // HandleRead prompts the user for a file name and reads the content of the file.
