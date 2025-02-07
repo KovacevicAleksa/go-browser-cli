@@ -6,11 +6,9 @@ import (
 	"github.com/chzyer/readline"
 )
 
-// Function to create an auto-completer for commands
 func Completer(commands []string) (*readline.PrefixCompleter, error) {
-	// Error handler: Check if the input slice is nil or empty
-	if commands == nil || len(commands) == 0 {
-		return nil, errors.New("commands slice cannot be nil or empty")
+	if len(commands) == 0 {
+		return nil, errors.New("commands slice cannot be empty")
 	}
 
 	var items []readline.PrefixCompleterInterface
