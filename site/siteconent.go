@@ -5,20 +5,13 @@ import (
 	"net/http"
 	"strings"
 
+	"go-browser/types"
+
 	"golang.org/x/net/html"
 )
 
-// SiteOptions defines options for fetching and filtering site content.
-type SiteOptions struct {
-	URL               string
-	Element           string
-	Language          string
-	IncludeAttributes bool
-	Filter            bool
-}
-
 // SiteContent fetches and processes content from a given site based on provided options.
-func SiteContent(options SiteOptions) (string, error) {
+func SiteContent(options types.SiteOptions) (string, error) {
 	// Create HTTP request
 	req, err := http.NewRequest("GET", options.URL, nil)
 	if err != nil {
@@ -54,7 +47,7 @@ func SiteContent(options SiteOptions) (string, error) {
 }
 
 // extractContent traverses the HTML tree and extracts content based on the provided options.
-func extractContent(n *html.Node, options SiteOptions) (string, error) {
+func extractContent(n *html.Node, options types.SiteOptions) (string, error) {
 	var content []string
 	seen := make(map[string]bool) // Tracks already seen content to avoid duplicates
 

@@ -6,6 +6,7 @@ import (
 	"go-browser/io"
 	searchbrowser "go-browser/search-browser"
 	"go-browser/site"
+	"go-browser/types"
 	utils "go-browser/utils"
 	"log"
 	"log/slog"
@@ -87,7 +88,7 @@ func HandleSystemLogs() {
 // HandleAIChat prompts the user for text and sends it to the AI model for a response.
 func HandleAIChat() {
 	text := utils.UserWriteString("Enter text:")
-	response := ai.ChatGPT(text)
+	response := ai.ChatAI(text)
 	fmt.Println("AI Response:", response)
 }
 
@@ -134,7 +135,7 @@ func HandleSiteContent() {
 	}
 
 	// Create an instance of SiteOptions with user input
-	options := site.SiteOptions{
+	options := types.SiteOptions{
 		URL:               url,
 		Element:           element,
 		Language:          lang,
@@ -167,6 +168,8 @@ func HandleSiteContent() {
 	io.UpdateFile("../user_files/history/history.txt", historytext, false)
 }
 
+// HandleHttpRequest handles an HTTP request by taking user input for the URL, method, and optional body content.
+// It then performs the request and logs the response and status code.
 func HandleHttpRequest() {
 	// Get the URL input from the user
 	url := utils.UserWriteString("Enter URL for Fetch:")
@@ -210,6 +213,8 @@ func HandleHttpRequest() {
 	io.UpdateFile("../user_files/history/history.txt", historytext, false)
 }
 
+// HandleHistory manages the history of executed HTTP requests.
+// It allows the user to delete the history file or view its contents.
 func HandleHistory() {
 	fmt.Println("History commands (delete, view)")
 	command := utils.UserWriteString("Enter command:")

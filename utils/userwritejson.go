@@ -6,6 +6,8 @@ import (
 	"log"
 )
 
+// UserWriteJson prompts the user to input a JSON string. It validates the input to ensure it's a valid JSON format.
+// The function will continue to ask for input until a valid JSON string is provided, then it returns the valid JSON string.
 func UserWriteJson(text string) string {
 	var input string
 

@@ -2,36 +2,21 @@ package site
 
 import (
 	"fmt"
+	"go-browser/types"
 	"io"
 	"log"
 	"net/http"
 	"time"
 )
 
-// HTTPClient defines an interface for making HTTP requests.
-// This allows us to use a mock client for testing.
-type HTTPClient interface {
-	Get(url string) (*http.Response, error)
-}
-
-// DefaultHTTPClient wraps the standard http.Client.
-type DefaultHTTPClient struct {
-	Client http.Client
-}
-
-// Get performs an HTTP GET request using the default HTTP client.
-func (d *DefaultHTTPClient) Get(url string) (*http.Response, error) {
-	return d.Client.Get(url)
-}
-
 // SitePerformanceChecker handles site performance checks with or without live monitoring.
 type SitePerformanceChecker struct {
-	Client HTTPClient
+	Client types.HTTPClient
 	URL    string
 }
 
 // NewSitePerformanceChecker initializes a new SitePerformanceChecker with the given HTTP client and URL.
-func NewSitePerformanceChecker(client HTTPClient, url string) *SitePerformanceChecker {
+func NewSitePerformanceChecker(client types.HTTPClient, url string) *SitePerformanceChecker {
 	return &SitePerformanceChecker{
 		Client: client,
 		URL:    url,
@@ -77,7 +62,7 @@ func (s *SitePerformanceChecker) Monitor(interval time.Duration) {
 
 // MeasureSitePerformance initiates the site performance check with or without live monitoring.
 func MeasureSitePerformance(url string, timeout time.Duration, live bool) error {
-	client := &DefaultHTTPClient{
+	client := &types.DefaultHTTPClient{
 		Client: http.Client{Timeout: timeout},
 	}
 

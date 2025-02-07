@@ -3,6 +3,7 @@ package searchbrowser
 import (
 	"encoding/json"
 	"fmt"
+	"go-browser/types"
 	"io"
 	"log"
 	"net/http"
@@ -20,14 +21,6 @@ func loadEnv() {
 	if err != nil {
 		log.Fatal("Error loading .env file")
 	}
-}
-
-// SearchResult represents the structure of the search result from the API.
-type SearchResult struct {
-	Items []struct {
-		Title string `json:"title"`
-		Link  string `json:"link"`
-	} `json:"items"`
 }
 
 // SearchGoogle uses Google Custom Search JSON API to perform a search.
@@ -72,7 +65,7 @@ func SearchGoogle(query string) ([]string, error) {
 	}
 
 	// Parse the JSON response
-	var result SearchResult
+	var result types.SearchResult
 	err = json.Unmarshal(body, &result)
 	if err != nil {
 		return nil, fmt.Errorf("failed to parse JSON: %v", err)

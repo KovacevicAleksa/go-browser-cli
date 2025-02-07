@@ -7,6 +7,7 @@ import (
 	"strings"
 )
 
+// UserWriteString prints a message if it's not empty and returns the user input as a string.
 func UserWriteString(text string) string {
 	if text != "" {
 		fmt.Println(text)

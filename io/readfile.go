@@ -7,6 +7,8 @@ import (
 	"path/filepath"
 )
 
+// ReadFile reads a file from the specified path within the "user_files" directory.
+// It first constructs the full file path, checks if the file exists, and then reads and prints its contents.
 func ReadFile(name string, path string) {
 	// Define the folder name
 	folderName := "user_files"

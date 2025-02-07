@@ -8,6 +8,8 @@ import (
 	"strings"
 )
 
+// UserWriteBool prompts the user for a 'true' or 'false' input and returns the corresponding boolean value.
+// It will continue to ask for input until a valid response is provided.
 func UserWriteBool(prompt string) bool {
 	reader := bufio.NewReader(os.Stdin)
 

@@ -6,6 +6,8 @@ import (
 	"strconv"
 )
 
+// UserWriteNum prompts the user for an integer input and returns the corresponding integer value.
+// If the input is not a valid number, it continues to prompt the user until a valid number is provided.
 func UserWriteNum(text string) int {
 	var input string
 	var number int

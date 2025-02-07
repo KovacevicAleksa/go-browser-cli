@@ -7,6 +7,7 @@ import (
 	"path/filepath"
 )
 
+// ListFile lists all files and directories inside a given folder
 func ListFile(folderName string) {
 	// Define the folder path
 	baseFolder := "user_files"

@@ -7,6 +7,8 @@ import (
 	"path/filepath"
 )
 
+// UpdateFile updates the content of a file by writing the provided text.
+// It either overwrites or appends based on the 'overwrite' parameter.
 func UpdateFile(name string, text string, overwrite bool) {
 	// Define the folder name
 	folderName := "user_files"

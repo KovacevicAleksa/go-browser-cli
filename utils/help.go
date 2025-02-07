@@ -6,6 +6,7 @@ import (
 	"strconv"
 )
 
+// DisplayHelp shows a paginated list of available commands.
 func DisplayHelp(page int) {
 	// Define the list of available commands
 	commands := []string{

@@ -7,25 +7,14 @@ import (
 	"net/http"
 	"os"
 
+	"go-browser/types"
+
 	"github.com/joho/godotenv"
 )
 
 const apiURL = "https://openrouter.ai/api/v1/chat/completions"
 
-type RequestBody struct {
-	Model       string              `json:"model"`
-	Messages    []map[string]string `json:"messages"`
-	MaxTokens   int                 `json:"max_tokens"`
-	Temperature float64             `json:"temperature"`
-}
-
-type ResponseBody struct {
-	Choices []struct {
-		Message map[string]string `json:"message"`
-	} `json:"choices"`
-}
-
-func ChatGPT(input string) string {
+func ChatAI(input string) string {
 	// Load .env file
 	err := godotenv.Load()
 	if err != nil {
@@ -49,7 +38,7 @@ func ChatGPT(input string) string {
 	}
 
 	// Create the request body
-	requestBody := RequestBody{
+	requestBody := types.RequestBody{
 		Model:       model,
 		Messages:    messages,
 		MaxTokens:   100,
@@ -83,7 +72,7 @@ func ChatGPT(input string) string {
 	defer resp.Body.Close()
 
 	// Parse the response
-	var responseBody ResponseBody
+	var responseBody types.ResponseBody
 	err = json.NewDecoder(resp.Body).Decode(&responseBody)
 	if err != nil {
 		log.Println("ERROR: Error decoding response:", err)

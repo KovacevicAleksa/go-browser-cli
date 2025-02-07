@@ -6,6 +6,7 @@ import (
 	"github.com/chzyer/readline"
 )
 
+// Completer creates a PrefixCompleter from a non-empty slice of commands.
 func Completer(commands []string) (*readline.PrefixCompleter, error) {
 	if len(commands) == 0 {
 		return nil, errors.New("commands slice cannot be empty")

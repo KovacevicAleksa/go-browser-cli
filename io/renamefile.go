@@ -7,6 +7,7 @@ import (
 	"path/filepath"
 )
 
+// RenameFile renames a file from oldName to newName in the specified path within the "user_files" folder.
 func RenameFile(oldName string, newName string, path string) {
 	// Define the folder name
 	folderName := "user_files"
