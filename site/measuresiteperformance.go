@@ -68,12 +68,9 @@ func (s *SitePerformanceChecker) Monitor(interval time.Duration) {
 	ticker := time.NewTicker(interval)
 	defer ticker.Stop()
 
-	for {
-		select {
-		case <-ticker.C:
-			if err := s.PerformRequest(); err != nil {
-				log.Println("Error: ", err)
-			}
+	for range ticker.C {
+		if err := s.PerformRequest(); err != nil {
+			log.Println("Error:", err)
 		}
 	}
 }
