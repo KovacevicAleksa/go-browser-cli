@@ -115,8 +115,9 @@ func HandleGoogle() {
 func HandleSitePerformance() {
 	url := utils.UserWriteString("Enter site URL to test performance:")
 	live := utils.UserWriteBool("Enable live monitoring? (true/false):")
+	interval := utils.UserWriteNum("How often send request in secounds")
 	timeout := 10 * time.Second
-	err := site.MeasureSitePerformance(url, timeout, live)
+	err := site.MeasureSitePerformance(url, timeout, live, interval)
 	if err != nil {
 		log.Println("ERROR: Error:", err)
 	}

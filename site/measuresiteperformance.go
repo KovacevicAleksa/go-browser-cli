@@ -61,7 +61,7 @@ func (s *SitePerformanceChecker) Monitor(interval time.Duration) {
 }
 
 // MeasureSitePerformance initiates the site performance check with or without live monitoring.
-func MeasureSitePerformance(url string, timeout time.Duration, live bool) error {
+func MeasureSitePerformance(url string, timeout time.Duration, live bool, interval int) error {
 	client := &types.DefaultHTTPClient{
 		Client: http.Client{Timeout: timeout},
 	}
@@ -70,7 +70,7 @@ func MeasureSitePerformance(url string, timeout time.Duration, live bool) error 
 
 	if live {
 		// Run live monitoring with a fixed interval of 5 seconds.
-		checker.Monitor(5 * time.Second)
+		checker.Monitor(time.Duration(interval) * time.Second)
 		return nil
 	}
 
