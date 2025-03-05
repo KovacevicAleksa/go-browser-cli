@@ -73,7 +73,7 @@ func HandleAbout() {
 
 // HandleList lists all files in the current directory.
 func HandleList() {
-	path := utils.UserWriteString("Enter Path: (. for main folder)")
+	path := utils.UserWriteString("Enter Path: (enter for main folder)")
 	io.ListFile(path)
 }
 

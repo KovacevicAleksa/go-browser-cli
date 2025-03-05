@@ -1,23 +1,30 @@
 # go-browser-cli
 
-`go-browser-cli` is a command-line tool written in Go for managing files and providing various utility commands. It includes features like file management, basic AI chat, and web search functionality.
+`go-browser-cli` is a command-line tool written in Go for managing files and providing various utility commands. It includes features like file management, AI chat, web search, and site analysis.
 
 ## Features
 
-- **File Management**:
-  - Create, read, update, delete, and rename files.
-  - List all files in the directory.
+### File Management:
+- **/create** - Creates a new file.
+- **/read** - Reads an item.
+- **/update** - Updates an item.
+- **/delete** - Deletes an item.
+- **/rename** - Renames an item.
+- **/list** - Lists all items.
 
-- **Utility Commands**:
-  - AI chat for quick assistance.
-  - Google search integration.
-  - Test website performance (loading time and status codes).
-  - Fetch and clean HTML content from a website.
-  - Display help with a paginated view of available commands.
-  - Function to create an auto-completer for commands (Tab).
+### Utility Commands:
+- **/help** - Displays the list of available commands.
+- **/exit** - Exits the application.
+- **/about** - Displays information about the application.
+- **/size** - Shows the size of the user folder.
 
-- **Interactive Command Line**:
-  - User-friendly CLI with paginated command help.
+### Web & AI Features:
+- **/aichat** - Starts an AI chat session.
+- **/google** - Searches Google.
+- **/siteperformance** - Analyzes site performance (loading time and status codes).
+- **/sitecontent** - Analyzes site content.
+- **/fetchSiteData** - Fetches and analyzes HTTP response data from a given URL.
+- **/history** - Displays the history of `/sitecontent`, `/fetchSiteData`, and Google searches.
 
 ## Installation
 
